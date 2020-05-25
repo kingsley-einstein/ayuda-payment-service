@@ -170,7 +170,7 @@ export class PaymentController {
   static async initializeTransfer(req: any, res: any) {
     try {
       const { referral, body } = req;
-      const referredResponse = await rp.get(`${referral.id}`, {
+      const referredResponse = await rp.get(`${env.referral_service}/referred/asList/${referral.id}`, {
         json: true, resolveWithFullResponse: true
       });
 
