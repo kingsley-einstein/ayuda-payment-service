@@ -13,6 +13,6 @@ export class Config {
   }
 
   getConfig(property: string) {
-    return this.config instanceof SpringConfig ? this.config.get(property) : new Error("Could not load" + property); 
+    return this.config instanceof SpringConfig ? this.config.get(property) : new Error("Could not load " + property); 
   }
 }
