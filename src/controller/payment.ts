@@ -235,8 +235,11 @@ export class PaymentController {
       const finalizedTransfer = await paymentCore.finalizeTransfer(
         body.code, body.otp
       );
-      const newReferralCodeResponse = await rp.patch("", {
-        headers, json: true, resolveWithFullResponse: true
+      const newReferralCodeResponse = await rp.patch(`${env.referral_service}/api/v1/withdraw`, {
+        headers, json: true, resolveWithFullResponse: true,
+        body: {
+          amountType: body.amountType
+        }
       });
 
       if (newReferralCodeResponse.statusCode >= 400) {

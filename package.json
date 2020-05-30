@@ -9,7 +9,8 @@
     "clean:local": "if exist ./build rmdir /s/q build",
     "clean:unix": "if -d ./build; then rm -rf build; fi",
     "build:local": "npm run clean:local && npm run build",
-    "build:unix": "npm run clean:unix && npm run build"
+    "build:unix": "npm run clean:unix && npm run build",
+    "start:local": "npm run build:local && set NODE_ENV=development&& node build/app"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +32,7 @@
     "paystack": "^2.0.1",
     "paystack-transfer": "^0.1.2",
     "request": "^2.88.2",
-    "request-promise": "^4.2.5"
+    "request-promise": "^4.2.5",
+    "typescript": "^3.7.2"
   }
 }

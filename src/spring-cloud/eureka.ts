@@ -17,6 +17,10 @@ export class Eureka {
         hostName,
         ipAddr,
         vipAddress,
+        port: {
+          "@enabled": process.env.NODE_ENV === "development",
+          $: parseInt(process.env.PORT)
+        },
         dataCenterInfo: {
           name: "MyOwn",
           "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo"
