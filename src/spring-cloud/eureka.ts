@@ -38,7 +38,7 @@ export class Eureka {
 
   start() {
     this.eureka.start((err, rest) => {
-      console.log(err.message);
+      if (err) console.log(err.message);
     });
   }
 }

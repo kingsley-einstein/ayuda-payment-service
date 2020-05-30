@@ -2,7 +2,7 @@ import CloudConfig, { Config as SpringConfig } from "cloud-config-client";
 import env from "../env";
 
 export class Config {
-  config: SpringConfig | Error;
+  config: any;
 
   async configure() {
     this.config = await CloudConfig.load({
@@ -13,6 +13,6 @@ export class Config {
   }
 
   getConfig(property: string) {
-    return this.config instanceof SpringConfig ? this.config.get(property) : new Error("Could not load " + property); 
+    return this.config.get(property);
   }
 }

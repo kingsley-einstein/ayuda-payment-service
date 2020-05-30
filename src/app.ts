@@ -20,7 +20,7 @@ server.start(async (port) => {
     const eureka = new Eureka(
       config.getConfig("eureka.instance.id"),
       config.getConfig("eureka.instance.name"),
-      config.getConfig("eureka.instance.host"),
+      config.getConfig("eureka.instance.hostname"),
       config.getConfig("eureka.instance.ip"),
       config.getConfig("eureka.instance.vipAddress"),
       config.getConfig("eureka.host")
