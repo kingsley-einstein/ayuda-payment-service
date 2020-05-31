@@ -169,7 +169,7 @@ export class PaymentController {
 
   static async initializeTransfer(req: any, res: any) {
     try {
-      const { referral, body } = req;
+      const { referral, body, headers } = req;
       const referredResponse = await rp.get(`${env.referral_service}/referred/asList/${referral.id}`, {
         json: true, resolveWithFullResponse: true
       });
@@ -214,27 +214,6 @@ export class PaymentController {
         "balance", amountToReceive, body.recipientCode
       );
 
-      res.status(200).json({
-        code: 200,
-        response: {
-          referral,
-          withdrawal: initializedTransfer
-        }
-      });
-    } catch ({ message }) {
-      res.status(500).json({
-        code: 500,
-        response: message
-      });
-    }
-  }
-
-  static async finalizeTransfer(req: any, res: any) {
-    try {
-      const { referral, body, headers } = req;
-      const finalizedTransfer = await paymentCore.finalizeTransfer(
-        body.code, body.otp
-      );
       const newReferralCodeResponse = await rp.patch(`${env.referral_service}/api/v1/withdraw`, {
         headers, json: true, resolveWithFullResponse: true,
         body: {
@@ -249,16 +228,25 @@ export class PaymentController {
         });
       }
 
-      const pay = await payment.deleteByReference(referral.id);
+      const deletedPay = await payment.deleteByReference(referral.id);
+
       res.status(200).json({
         code: 200,
         response: {
           referral,
-          withdrawal: finalizedTransfer,
+          withdrawal: initializedTransfer,
           message: newReferralCodeResponse.body.response,
-          formerPaymentObject: pay
+          formerPaymentObject: deletedPay
         }
       });
+
+      // res.status(200).json({
+      //   code: 200,
+      //   response: {
+      //     referral,
+      //     withdrawal: initializedTransfer
+      //   }
+      // });
     } catch ({ message }) {
       res.status(500).json({
         code: 500,
@@ -266,4 +254,42 @@ export class PaymentController {
       });
     }
   }
+
+  // static async finalizeTransfer(req: any, res: any) {
+  //   try {
+  //     const { referral, body, headers } = req;
+  //     const finalizedTransfer = await paymentCore.finalizeTransfer(
+  //       body.code, body.otp
+  //     );
+  //     const newReferralCodeResponse = await rp.patch(`${env.referral_service}/api/v1/withdraw`, {
+  //       headers, json: true, resolveWithFullResponse: true,
+  //       body: {
+  //         amountType: body.amountType
+  //       }
+  //     });
+
+  //     if (newReferralCodeResponse.statusCode >= 400) {
+  //       return res.status(newReferralCodeResponse.statusCode).json({
+  //         code: newReferralCodeResponse.statusCode,
+  //         response: newReferralCodeResponse.body.response
+  //       });
+  //     }
+
+  //     const pay = await payment.deleteByReference(referral.id);
+  //     res.status(200).json({
+  //       code: 200,
+  //       response: {
+  //         referral,
+  //         withdrawal: finalizedTransfer,
+  //         message: newReferralCodeResponse.body.response,
+  //         formerPaymentObject: pay
+  //       }
+  //     });
+  //   } catch ({ message }) {
+  //     res.status(500).json({
+  //       code: 500,
+  //       response: message
+  //     });
+  //   }
+  // }
 }
