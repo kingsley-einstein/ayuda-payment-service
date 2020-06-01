@@ -23,7 +23,9 @@ server.start(async (port) => {
       config.getConfig("eureka.instance.hostname"),
       config.getConfig("eureka.instance.ip"),
       config.getConfig("eureka.instance.vipAddress"),
-      config.getConfig("eureka.host")
+      config.getConfig("eureka.host"),
+      config.getConfig("eureka.instance.hostname") + "/info",
+      config.getConfig("eureka.instance.hostname") + "/"
     );
 
     eureka.start();

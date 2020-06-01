@@ -67,8 +67,12 @@ export class Payment {
     return initializedTransfer;
   }
 
-  async finalizeTransfer(code: any, otp: any) {
-    const finalizedTransfer = await this.transfer.finalize(code, otp);
-    return finalizedTransfer;
+  // async finalizeTransfer(code: any, otp: any) {
+  //   const finalizedTransfer = await this.transfer.finalize(code, otp);
+  //   return finalizedTransfer;
+  // }
+  async fetchTransfer(code: any) {
+    const transferByCode = await this.transfer.fetchTransfer(code);
+    return transferByCode;
   }
 }

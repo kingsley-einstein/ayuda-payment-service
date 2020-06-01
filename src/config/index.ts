@@ -11,4 +11,16 @@ export default (app: express.Application) => {
   app.use(logger());
   app.use(referral());
   app.use("/api/v1", router);
+  app.get("/info", (req, res) => {
+    res.status(200).json({
+      message: "App is running"
+    });
+  });
+  app.get("/", (req, res) => {
+    res.status(200).json({
+      path: req.path,
+      status: res.statusCode,
+      message: res.statusMessage
+    });
+  });
 }

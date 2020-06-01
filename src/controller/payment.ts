@@ -201,14 +201,14 @@ export class PaymentController {
 
       const pay: any = await payment.findByReference(referral.id);
 
-      if (new Date(pay.dueDate) > new Date() && referralList.length < 10) {
+      if (new Date(pay.dueDate) > new Date() && referralList.length < 1) {
         return res.status(400).json({
           code: 400,
-          response: "You can't withdraw yet."
+          response: "You can't withdraw yet. You must have at least 1 referral within 2 weeks to be able to withdraw."
         });
       }
 
-      const amountToReceive = referralList.length === 10 ? (referral.amountType * 8 * 100) : (referral.amountType * 0.95 * 100);
+      const amountToReceive = referralList.length === 10 ? (referral.amountType * 8 * 100) : (referral.amountType * 100);
 
       const initializedTransfer = await paymentCore.initiateTransfer(
         "balance", amountToReceive, body.recipientCode
@@ -247,6 +247,30 @@ export class PaymentController {
       //     withdrawal: initializedTransfer
       //   }
       // });
+    } catch ({ message }) {
+      res.status(500).json({
+        code: 500,
+        response: message
+      });
+    }
+  }
+
+  static async getTransfer(req: any, res: any) {
+    try {
+      const { body } = req;
+      const transfer = await paymentCore.fetchTransfer(body.code);
+      if (!transfer || !transfer.status) {
+        return res.status(400).json({
+          code: 400,
+          response: "Transfer not found."
+        });
+      }
+      res.status(200).json({
+        code: 200,
+        response: {
+          transfer
+        }
+      });
     } catch ({ message }) {
       res.status(500).json({
         code: 500,

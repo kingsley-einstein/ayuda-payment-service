@@ -11,6 +11,7 @@ router.post("/transfer/initialize", PaymentController.initializeTransfer);
 
 router.get("/payment/find", PaymentController.findByReference);
 router.get("/payment/verify", PaymentController.verifyPayment);
+router.get("/transfer/retrieve", PaymentController.getTransfer);
 
 router.delete("/payment/delete", PaymentController.deletePayment);
 

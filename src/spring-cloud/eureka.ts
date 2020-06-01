@@ -8,7 +8,9 @@ export class Eureka {
     hostName: string,
     ipAddr: string,
     vipAddress: string,
-    eurekaUrl: string
+    eurekaUrl: string,
+    statusPageUrl: string,
+    homePageUrl: string
   ) {
     this.eureka = new EurekaObject({
       instance: {
@@ -17,6 +19,8 @@ export class Eureka {
         hostName,
         ipAddr,
         vipAddress,
+        statusPageUrl,
+        homePageUrl,
         port: {
           "@enabled": process.env.NODE_ENV === "development",
           $: parseInt(process.env.PORT)
