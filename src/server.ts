@@ -19,8 +19,10 @@ export class Server {
 
   start(cb: (port: number) => void): ApplicationServer {
     return http.createServer({
-      key: fs.readFileSync("../server.key"),
-      cert: fs.readFileSync("../server.cert")
+      key: fs.readFileSync("../key.pem"),
+      cert: fs.readFileSync("../cert.pem"),
+      rejectUnauthorized: false,
+      requestCert: false
     }, this.app).listen(env.port[process.env.NODE_ENV], () => {
       cb(env.port[process.env.NODE_ENV]);
     });
