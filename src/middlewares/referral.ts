@@ -5,7 +5,10 @@ export const referral = () => {
   return async (req: any, res: any, next: any) => {
     const { headers } = req;
     const referralResponse = await rp.get(`${env.referral_service}/api/v1/owned`, {
-      headers, json: true, resolveWithFullResponse: true
+      headers, json: true, resolveWithFullResponse: true,
+      agentOptions: {
+        rejectUnauthorized: false
+      }
     });
     if (referralResponse.statusCode >= 400) {
       return res.status(referralResponse.statusCode).json({

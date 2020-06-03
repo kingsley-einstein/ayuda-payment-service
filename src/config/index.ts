@@ -10,7 +10,7 @@ export default (app: express.Application) => {
   }));
   app.use(cors("*"));
   app.use(logger());
-  app.use(referral());
+  // app.use(referral());
   app.use(actuator());
   app.use("/api/v1", router);
   // app.get("/info", (req, res) => {
