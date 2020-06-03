@@ -22,7 +22,7 @@ export class Eureka {
         statusPageUrl,
         homePageUrl,
         port: {
-          "@enabled": process.env.NODE_ENV === "development",
+          "@enabled": true,
           $: parseInt(process.env.PORT)
         },
         dataCenterInfo: {
