@@ -1,5 +1,6 @@
 import express from "express";
-import { Server as ApplicationServer } from "http";
+import http, { Server as ApplicationServer } from "https";
+import fs from "fs";
 import config from "./config";
 import env from "./env";
 
@@ -17,8 +18,11 @@ export class Server {
   }
 
   start(cb: (port: number) => void): ApplicationServer {
-    return this.app.listen(env.port[process.env.NODE_ENV], () => {
-      cb(parseInt(env.port[process.env.NODE_ENV]));
+    return http.createServer({
+      key: fs.readFileSync("../key.pem"),
+      cert: fs.readFileSync("../cert.pem")
+    }, this.app).listen(env.port[process.env.NODE_ENV], () => {
+      cb(env.port[process.env.NODE_ENV]);
     });
   }
 
