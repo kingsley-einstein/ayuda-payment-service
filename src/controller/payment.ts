@@ -182,10 +182,10 @@ export class PaymentController {
       }
 
       const referralList: any[] = referredResponse.body.response;
-      const payments: any[] = [];
+      let payments: any[] = [];
 
       referralList.forEach(async (r) => {
-        payments.concat(
+        payments = payments.concat(
           await payment.findByReference(r.id)
         );
       });
