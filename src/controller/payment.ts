@@ -184,11 +184,18 @@ export class PaymentController {
       const referralList: any[] = referredResponse.body.response;
       let payments: any[] = [];
 
-      referralList.forEach(async (r) => {
-        payments = payments.concat(
-          await payment.findByReference(r.id)
-        );
-      });
+      if (referralList.length > 0) {
+        referralList.forEach(async (r) => {
+          payments = payments.concat(
+            await payment.findByReference(r.id)
+          );
+        });
+      } else {
+        return res.status(400).json({
+          code: 400,
+          response: "You do not have any referrals."
+        });
+      }
 
       const paid: any[] = payments.filter((p) => p.paid);
 
