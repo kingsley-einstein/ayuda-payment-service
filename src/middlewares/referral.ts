@@ -7,7 +7,7 @@ export const referral = () => {
     const referralAPI = env.referral_service + "/api/v1/owned"
     console.log(referralAPI);
     const referralResponse = await rp.get(referralAPI, {
-      headers, json: true, resolveWithFullResponse: true, timeout: 120000, simple: false, host: null
+      headers, json: true, resolveWithFullResponse: true, timeout: 120000, simple: false
     });
     if (referralResponse.statusCode >= 400) {
       return res.status(referralResponse.statusCode).json({
