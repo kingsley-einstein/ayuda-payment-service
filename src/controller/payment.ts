@@ -1,4 +1,4 @@
-import axios from "axios";
+import rp from "request-promise";
 import { Payment } from "../db";
 import { Payment as PaymentCore } from "../payment";
 import env from "../env";
@@ -168,16 +168,18 @@ export class PaymentController {
   static async initializeTransfer(req: any, res: any) {
     try {
       const { referral, body, headers } = req;
-      const referredResponse = await axios.get(`${env.referral_service}/api/v1/referred/asList/${referral.id}`, { headers });
+      const referredResponse = await rp.get(`${env.referral_service}/api/v1/referred/asList/${referral.id}`, {
+        json: true, resolveWithFullResponse: true
+      });
 
-      if (referredResponse.status >= 400) {
-        return res.status(referredResponse.status).json({
-          code: referredResponse.status,
-          response: referredResponse.data.response
+      if (referredResponse.statusCode >= 400) {
+        return res.status(referredResponse.statusCode).json({
+          code: referredResponse.statusCode,
+          response: referredResponse.body.response
         });
       }
 
-      const referralList: any[] = referredResponse.data.response;
+      const referralList: any[] = referredResponse.body.response;
       let payments: any[] = [];
 
       if (referralList.length < 2) {
@@ -241,16 +243,17 @@ export class PaymentController {
        });
       }
 
-      const newReferralCodeResponse = await axios.patch(`${env.referral_service}/api/v1/withdraw`, {
-       amountType: body.amountType
-     }, {
-        headers, 
+      const newReferralCodeResponse = await rp.patch(`${env.referral_service}/api/v1/withdraw`, {
+        headers, json: true, resolveWithFullResponse: true,
+        body: {
+          amountType: body.amountType
+        }
       });
 
-      if (newReferralCodeResponse.status >= 400) {
-        return res.status(newReferralCodeResponse.status).json({
-          code: newReferralCodeResponse.status,
-          response: newReferralCodeResponse.data.response
+      if (newReferralCodeResponse.statusCode >= 400) {
+        return res.status(newReferralCodeResponse.statusCode).json({
+          code: newReferralCodeResponse.statusCode,
+          response: newReferralCodeResponse.body.response
         });
       }
 
@@ -261,7 +264,7 @@ export class PaymentController {
         response: {
           referral,
           withdrawal: initializedTransfer,
-          message: newReferralCodeResponse.data.response,
+          message: newReferralCodeResponse.body.response,
           formerPaymentObject: deletedPay
         }
       });
