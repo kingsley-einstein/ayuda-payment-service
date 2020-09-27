@@ -4,8 +4,9 @@ import env from "../env";
 export const referral = () => {
   return async (req: any, res: any, next: any) => {
     const { headers } = req;
-    console.log(env.referral_service);
-    const referralResponse = await rp.get(`${env.referral_service}/api/v1/owned`, {
+    const referralAPI = env.referral_service + "/api/v1/owned"
+    console.log(referralAPI);
+    const referralResponse = await rp.get(referralAPI, {
       headers, json: true, resolveWithFullResponse: true, timeout: 120000
     });
     if (referralResponse.statusCode >= 400) {
