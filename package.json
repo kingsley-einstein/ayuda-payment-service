@@ -5,14 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf build",
     "build": "tsc -p ./",
-    "clean:local": "if exist ./build rmdir /s/q build",
-    "clean:unix": "if -d ./build; then rm -rf build; fi",
-    "build:local": "npm run clean:local && npm run build",
-    "build:unix": "npm run clean:unix && npm run build",
+    "clean:build": "npm run clean && npm run build",
     "start:local": "npm run build:unix && export NODE_ENV=development && node build/app",
-    "start:production": "export NODE_ENV=production && export PORT=80 && node build/app",
-    "start:windows": "npm run build:local && set NODE_ENV=development&& set PORT=4557&& node build/app"
+    "start:production": "npm run clean:build && cross-env NODE_ENV=production node build/app"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +25,7 @@
     "@types/request": "^2.48.5",
     "@types/request-promise": "^4.1.46",
     "cloud-config-client": "^1.5.2",
+    "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "eureka-js-client": "^4.5.0",
     "express": "^4.17.1",
@@ -37,6 +35,7 @@
     "paystack-transfer": "^0.1.2",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
+    "rimraf": "^3.0.2",
     "typescript": "^3.7.2"
   }
 }
