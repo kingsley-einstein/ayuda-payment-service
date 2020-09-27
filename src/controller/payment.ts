@@ -16,10 +16,7 @@ export class PaymentController {
       const payExists = await payment.findByReference(referral.id);
       
       if (payExists) {
-        return res.status(400).json({
-          code: 400,
-          response: "You already have a pending payment."
-        });
+        await payment.deleteByReference(referral.id);
       }
 
       const pay: any = await payment.create({
@@ -67,9 +64,10 @@ export class PaymentController {
   static async initializePayment(req: any, res: any) {
     try {
       const { referral, body } = req;
+      const pay = await payment.findByReference(referral.id);
       const paymentInitialization = await paymentCore.initializeTransaction(
         (referral.amountType * 100), 
-        referral.id, 
+        pay._id.toString(), 
         body.name, 
         body.email, 
         body.callback_url,
@@ -184,12 +182,18 @@ export class PaymentController {
       const referralList: any[] = referredResponse.body.response;
       let payments: any[] = [];
 
+      if (referralList.length < 2) {
+       return res.status(400).json({
+        code: 400,
+        response: "You must have at least 2 referrals to be able to withdraw."
+       });
+      }
+
       if (referralList.length > 0) {
-        referralList.forEach(async (r) => {
-          payments = payments.concat(
-            await payment.findByReference(r.id)
-          );
-        });
+        for (let r of referralList)
+         payments = payments.concat(
+          await payment.findByReference(r.id)
+         );
       } else {
         return res.status(400).json({
           code: 400,
@@ -199,27 +203,45 @@ export class PaymentController {
 
       const paid: any[] = payments.filter((p) => p.paid);
 
-      if (paid.length < 10) {
+      if (paid.length < referralList.length) {
         return res.status(400).json({
           code: 400,
-          response: `${10 - paid.length} of your referrals ${10 - paid.length > 1 ? "have" : "has" } not made or verified a payment yet.`
+          response: `${referralList.length - paid.length} of your referrals ${referralList.length - paid.length > 1 ? "have" : "has" } not made or verified a payment yet.`
         });
       }
 
-      const pay: any = await payment.findByReference(referral.id);
+      // const pay: any = await payment.findByReference(referral.id);
 
-      if (new Date(pay.dueDate) > new Date() && referralList.length < 1) {
-        return res.status(400).json({
-          code: 400,
-          response: "You can't withdraw yet. You must have at least 1 referral within 2 weeks to be able to withdraw."
-        });
+      // if (new Date(pay.dueDate) > new Date() && referralList.length < 1) {
+      //   return res.status(400).json({
+      //     code: 400,
+      //     response: "You can't withdraw yet. You must have at least 1 referral within 2 weeks to be able to withdraw."
+      //   });
+      // }
+
+      let amountToReceive: number = 0;
+
+      if (referralList.length >= 2 && referralList.length < 10) {
+       for (let r of referralList)
+        amountToReceive = amountToReceive + r.amountType;
+       
+       amountToReceive = (70 / 100) * amountToReceive;
+      } else if (referralList.length === 10) {
+       amountToReceive = (referral.amountType) * 8;
       }
 
-      const amountToReceive = referralList.length === 10 ? (referral.amountType * 8 * 100) : (referral.amountType * 100);
+      // console.log(amountToReceive * 100);
 
       const initializedTransfer = await paymentCore.initiateTransfer(
-        "balance", amountToReceive, body.recipientCode
+        "balance", amountToReceive * 100, body.recipientCode
       );
+
+      if (!initializedTransfer.status) {
+       return res.status(400).json({
+        code: 400,
+        response: initializedTransfer.message
+       });
+      }
 
       const newReferralCodeResponse = await rp.patch(`${env.referral_service}/api/v1/withdraw`, {
         headers, json: true, resolveWithFullResponse: true,

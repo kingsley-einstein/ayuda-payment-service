@@ -26,8 +26,7 @@ export class Payment {
     this.PaymentSchema = new Schema({
       amount: Number,
       reference: {
-        type: String,
-        unique: true
+        type: String
       },
       paid: {
         type: Boolean,
