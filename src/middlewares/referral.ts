@@ -7,6 +7,7 @@ export const referral = () => {
     const referralResponse = await rp.get(`${env.referral_service}/api/v1/owned`, {
       headers, json: true, resolveWithFullResponse: true,
     });
+    console.log(referralResponse, env.referral_service);
     if (referralResponse.statusCode >= 400) {
       return res.status(referralResponse.statusCode).json({
         code: referralResponse.statusCode,
