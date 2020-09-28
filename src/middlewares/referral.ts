@@ -16,6 +16,7 @@ export const referral = () => {
       "Content-Type": "application/json"
      }
     });
+    console.log(referralResponse);
     if (referralResponse.statusCode >= 400) {
       return res.status(referralResponse.statusCode).json({
         code: referralResponse.statusCode,
