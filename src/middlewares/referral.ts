@@ -1,7 +1,7 @@
 import rp from "request-promise";
 import env from "../env";
 
-const referralAPI = env.referral_service + "/api/v1/owned"
+const referralAPI = env.referral_service + "/api/v1/owned";
 
 export const referral = () => {
   return async (req: any, res: any, next: any) => {
