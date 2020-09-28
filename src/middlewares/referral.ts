@@ -1,5 +1,6 @@
 import rp from "request-promise";
 import fs from "fs";
+import path from "path";
 import env from "../env";
 
 const referralAPI = env.referral_service + "/api/v1/owned";
@@ -14,8 +15,8 @@ export const referral = () => {
      resolveWithFullResponse: true,
      headers,
      agentOptions: {
-      key: fs.readFileSync("../certs/key.pem"),
-      cert: fs.readFileSync("../certs/cert.pem")
+      key: fs.readFileSync(path.join(__dirname, "../certs/key.pem")),
+      cert: fs.readFileSync(path.join(__dirname, "../certs/cert.pem"))
      }
     });
     // console.log(referralResponse);
