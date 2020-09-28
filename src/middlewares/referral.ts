@@ -13,7 +13,7 @@ export const referral = () => {
      resolveWithFullResponse: true,
      headers: {
       ...headers,
-      host: ""
+      host: env.referral_service
      }
     });
     // console.log(referralResponse);
