@@ -1,6 +1,4 @@
 import rp from "request-promise";
-import fs from "fs";
-import path from "path";
 import env from "../env";
 
 const referralAPI = env.referral_service + "/api/v1/owned";
@@ -13,12 +11,7 @@ export const referral = () => {
      json: true,
      simple: false,
      resolveWithFullResponse: true,
-     headers,
-     agentOptions: {
-      key: fs.readFileSync(path.join(__dirname, "../certs/key.pem")),
-      cert: fs.readFileSync(path.join(__dirname, "../certs/cert.pem")),
-      passphrase: env.rqPassPhrase
-     }
+     headers
     });
     // console.log(referralResponse);
     if (referralResponse.statusCode >= 400) {
