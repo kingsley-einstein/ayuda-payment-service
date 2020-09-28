@@ -9,7 +9,7 @@ export default (app: express.Application) => {
     extended: false
   }));
   app.use(cors("*"));
-  // app.use(logger());
+  app.use(logger());
   // app.use(referral());
   app.use(actuator());
   app.use("/api/v1", router);
