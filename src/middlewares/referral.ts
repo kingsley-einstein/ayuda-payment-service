@@ -16,7 +16,8 @@ export const referral = () => {
      headers,
      agentOptions: {
       key: fs.readFileSync(path.join(__dirname, "../certs/key.pem")),
-      cert: fs.readFileSync(path.join(__dirname, "../certs/cert.pem"))
+      cert: fs.readFileSync(path.join(__dirname, "../certs/cert.pem")),
+      passphrase: env.rqPassPhrase
      }
     });
     // console.log(referralResponse);

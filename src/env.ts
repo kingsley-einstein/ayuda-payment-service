@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== "production") {
 export default {
   paystack_secret: process.env.PAYSTACK_SECRET_KEY,
   referral_service: process.env.REFERRAL_SERVICE,
+  rqPassPhrase: process.env.PASSPHRASE,
   port: {
     development: process.env.PORT,
     test: process.env.TEST_PORT,
