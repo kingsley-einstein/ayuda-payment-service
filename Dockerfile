@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:14-alpine
 COPY ./src ./src
 COPY package*.json ./
 COPY tsconfig.json ./
