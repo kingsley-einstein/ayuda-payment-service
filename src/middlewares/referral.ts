@@ -11,8 +11,7 @@ export const referral = () => {
      json: true,
      simple: false,
      resolveWithFullResponse: true,
-     headers,
-     strictSSL: false
+     headers
     });
     // console.log(referralResponse);
     if (referralResponse.statusCode >= 400) {
