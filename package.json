@@ -9,7 +9,7 @@
     "build": "tsc -p ./",
     "clean:build": "npm run clean && npm run build",
     "start:local": "npm run clean:build && cross-env NODE_ENV=development node build/app",
-    "start:production": "npm run clean:build && cp -R src/certs build/certs && cross-env NODE_ENV=production node build/app"
+    "start:production": "npm run clean:build && cross-env NODE_ENV=production node build/app"
   },
   "keywords": [],
   "author": "",
