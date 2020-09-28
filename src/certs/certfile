@@ -1,3 +1,0 @@
-basicConstraints=CA:FALSE
-extendedKeyUsage=serverAuth
-subjectAltName=DNS:*.herokuapp.com,DNS:herokuapp.com,DNS:ayuda-payment-service-70b768.us1.kinto.io
