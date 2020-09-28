@@ -8,7 +8,7 @@
     "clean": "rimraf build",
     "build": "tsc -p ./",
     "clean:build": "npm run clean && npm run build",
-    "start:local": "npm run build:unix && export NODE_ENV=development && node build/app",
+    "start:local": "npm run clean:build && cross-env NODE_ENV=development NODE_DEBUG=request node build/app",
     "start:production": "npm run clean:build && cross-env NODE_ENV=production node build/app"
   },
   "keywords": [],
@@ -25,7 +25,7 @@
     "@types/paystack": "^2.0.0",
     "@types/request": "^2.48.5",
     "@types/request-promise": "^4.1.46",
-    "axios": "^0.19.0",
+    "axios": "^0.20.0",
     "cloud-config-client": "^1.5.2",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
