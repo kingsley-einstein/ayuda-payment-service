@@ -233,10 +233,12 @@ export class PaymentController {
       // console.log(amountToReceive * 100);
 
       const initializedTransfer = await paymentCore.initiateTransfer(
-        "balance", amountToReceive, body.recipientCode
+        "balance", amountToReceive * 100, body.recipientCode
       );
 
       // console.log(amountToReceive * 100);
+
+      console.log(initializedTransfer);
 
       if (!initializedTransfer.status) {
        return res.status(400).json({
