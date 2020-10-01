@@ -236,6 +236,8 @@ export class PaymentController {
         "balance", amountToReceive * 100, body.recipientCode
       );
 
+      console.log(amountToReceive * 100);
+
       if (!initializedTransfer.status) {
        return res.status(400).json({
         code: 400,
