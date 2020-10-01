@@ -230,7 +230,7 @@ export class PaymentController {
        amountToReceive = (referral.amountType) * 8;
       }
 
-      // console.log(amountToReceive * 100);
+      console.log(amountToReceive * 100);
 
       const initializedTransfer = await paymentCore.initiateTransfer(
         "balance", amountToReceive * 100, body.recipientCode
