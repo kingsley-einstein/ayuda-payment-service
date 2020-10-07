@@ -61,7 +61,7 @@ export class PaymentController {
     }
   }
 
-  static async initializePayment(req: any, res: any) {
+  static async ininvtializePayment(req: any, res: any) {
     try {
       const { referral, body } = req;
       const pay = await payment.findByReference(referral.id);
@@ -97,7 +97,14 @@ export class PaymentController {
   static async verifyPayment(req: any, res: any) {
     try {
       const { referral } = req;
-      const paymentVerification = await paymentCore.verifyTransaction(referral.id);
+      const pay = await payment.findByReference(referral.id)
+      const paymentVerification = await paymentCore.verifyTransaction(pay._id.toString());
+      if (!paymentVerification.status) {
+       return res.status(400).json({
+        code: 400,
+        response: paymentVerification.message
+       });
+      }
       const updatedPay = await payment.updateByReference(referral.id, {
         dueDate: new Date(
           new Date().setDate(
