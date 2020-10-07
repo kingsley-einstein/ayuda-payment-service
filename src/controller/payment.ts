@@ -61,7 +61,7 @@ export class PaymentController {
     }
   }
 
-  static async ininvtializePayment(req: any, res: any) {
+  static async initializePayment(req: any, res: any) {
     try {
       const { referral, body } = req;
       const pay = await payment.findByReference(referral.id);
